@@ -1,0 +1,28 @@
+#Sat Jan 04 13:22:00 UTC 2025
+micronaut:
+
+  application:
+    name: portfolio simulator
+
+  security:
+    enabled: true
+    token:
+      jwt:
+        enabled: true
+    routes:
+      - pattern: "/users/register"
+        security: none
+
+
+
+
+
+  hibernate:
+    enabled: false
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/Portfolio_Simulator
+    driverClassName: org.postgresql.Driver
+    username: ${JDBC_USER:prakhar}
+    password: ${JDBC_PASSWORD:prakhar}
