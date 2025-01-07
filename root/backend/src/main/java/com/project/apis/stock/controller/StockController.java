@@ -7,6 +7,8 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
+//import io.micronaut.security.annotation.Secured;
+//import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.reactivex.Flowable;
@@ -15,14 +17,13 @@ import org.reactivestreams.Publisher;
 
 import java.security.Principal;
 
-@Secured(SecurityRule.IS_ANONYMOUS)
 @Controller("app/v1/stock")
+@Secured(SecurityRule.IS_AUTHENTICATED)
 public class StockController {
 
     @Post("/get")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String index(Principal principal) {
-        return principal.getName();
+    public String index() {
+        return "Hi";
     }
 }
 
