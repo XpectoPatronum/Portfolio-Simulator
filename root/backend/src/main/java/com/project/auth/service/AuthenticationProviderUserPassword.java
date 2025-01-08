@@ -1,7 +1,7 @@
 package com.project.auth.service;
 
-import com.project.auth.model.User;
-import com.project.auth.repository.UserRepository;
+import com.project.commons.model.User;
+import com.project.commons.repository.UserRepository;
 import io.micronaut.data.connection.annotation.Connectable;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.AuthenticationFailureReason;

@@ -1,6 +1,6 @@
-package com.project.auth.repository;
+package com.project.commons.repository;
 
-import com.project.auth.model.User;
+import com.project.commons.model.User;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.jdbi.v3.core.Handle;

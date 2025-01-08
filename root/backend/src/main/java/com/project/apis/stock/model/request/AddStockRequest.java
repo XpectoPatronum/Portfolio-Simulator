@@ -1,14 +1,20 @@
 package com.project.apis.stock.model.request;
 
-import com.project.commons.model.Stock;
+import io.micronaut.core.annotation.Introspected;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.inject.Singleton;
+import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Singleton
+@Data
+@Introspected
+@Serdeable.Deserializable
 public class AddStockRequest {
-    private Stock stock;
+    private String stock_ticker;
     private long quantity;
-    private double priceBought;
+    private BigDecimal priceBought;
     private LocalDate date;
 }

@@ -1,5 +1,10 @@
 #Sat Jan 04 13:22:00 UTC 2025
 micronaut:
+  application:
+    name: Portfolio Simulator
+    aop:
+      enabled: true
+
   security:
     authentication: bearer
     token:
@@ -9,27 +14,9 @@ micronaut:
             generator:
               secret: '"${JWT_SECRET:pleaseChangeThisSecretForANewOne}"'
               jws-algorithm: HS256
-        generator:
-          access-token:
-            expiration: 3600
-    endpoints:
-      login:
-        enabled: true
-      oauth:
-        enabled: true
-    intercept-url-map:
-      - pattern: /auth/**
-        access:
-          - isAnonymous()
 
 
 
-#datasources:
-#  default:
-#    url: jdbc:postgresql://localhost:5432/Portfolio_Simulator
-#    driverClassName: org.postgresql.Driver
-#    username: ${JDBC_USER:prakhar}
-#    password: ${JDBC_PASSWORD:prakhar}
 
 datasources:
   default:
@@ -37,3 +24,6 @@ datasources:
     driverClassName: org.postgresql.Driver
     username: ${JDBC_USER:prakhar}
     password: ${JDBC_USER:prakhar}
+    pool:
+      enabled: true
+      maxSize: 10

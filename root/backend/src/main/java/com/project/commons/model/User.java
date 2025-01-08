@@ -1,4 +1,4 @@
-package com.project.auth.model;
+package com.project.commons.model;
 
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;

@@ -1,8 +1,8 @@
 package com.project.auth.service;
 
-import com.project.auth.model.User;
-import com.project.auth.repository.UserRepository;
-import com.project.auth.dto.RegisterRequest;
+import com.project.commons.model.User;
+import com.project.commons.repository.UserRepository;
+import com.project.auth.model.RegisterRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.security.token.jwt.generator.JwtTokenGenerator;
 import jakarta.inject.Inject;
