@@ -23,6 +23,10 @@ dependencies {
     testImplementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-jackson-databind")
 
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut.reactor:micronaut-reactor-http-client")
+    implementation("io.micronaut.reactor:micronaut-reactor")
+
     //LOGGER
     implementation("io.zipkin.brave:brave-context-slf4j:5.13.9")
 
@@ -49,7 +53,7 @@ dependencies {
 
 
     //For Password Hashing
-    implementation("org.mindrot:jbcrypt:0.4")
+    implementation("at.favre.lib:bcrypt:0.10.2")
 
 
     // Database dependencies
@@ -57,7 +61,7 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("org.postgresql:postgresql")
 
-    implementation("at.favre.lib:bcrypt:0.10.2")
+
 }
 
 

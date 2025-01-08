@@ -16,11 +16,21 @@ micronaut:
               jws-algorithm: HS256
 
 
+http:
+  client:
+    read-timeout: 30s
+    connection-pool:
+      max-pending-requests: 50
+      enabled: true
+    event-loop-group:
+      num-threads: 8
+    reactive:
+      enabled: true
 
 
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/Portfolio_Simulator
+    url: jdbc:postgresql://localhost:5432/PortfolioSimulator
     driverClassName: org.postgresql.Driver
     username: ${JDBC_USER:prakhar}
     password: ${JDBC_USER:prakhar}
