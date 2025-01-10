@@ -1,7 +1,9 @@
 package com.project.apis.portfolio.repository;
 
+import com.project.commons.mapper.PnLMapper;
 import com.project.commons.mapper.TransactionMapper;
 import com.project.commons.mapper.UserPortfolioMapper;
+import com.project.commons.model.PnL;
 import com.project.commons.model.Transaction;
 import com.project.commons.model.UserPortfolio;
 import io.micronaut.transaction.annotation.Transactional;
@@ -120,6 +122,12 @@ public class PortfolioRepository {
             }
             recordSellTransaction(handle, userId, stockTicker,quantityToSell, sellPrice);
 
+            // Calculate Realized PnL
+            BigDecimal realizedPnlForThisSale = sellPrice.multiply(BigDecimal.valueOf(quantityToSell)).subtract(totalCostOfSoldShares);
+
+            // Update PnL table
+            updatePnl(handle, userId, stockTicker, realizedPnlForThisSale);
+
             // 5. Update the portfolio
             int newTotalQuantity = portfolio.getTotalQuantity() - quantityToSell;
             if(newTotalQuantity == 0) {
@@ -142,14 +150,38 @@ public class PortfolioRepository {
         }
     }
 
+    private void updatePnl(Handle handle, Long userId, String stockTicker, BigDecimal realizedPnlForThisSale) {
+        // Check if PnL entry exists
+        Optional<PnL> pnlOptional = findPnl(handle, userId, stockTicker);
+
+        if (pnlOptional.isPresent()) {
+            // Update existing PnL entry
+            handle.execute("UPDATE pnl SET realized_pnl = realized_pnl + ? WHERE user_id = ? AND stock_ticker = ?",
+                    realizedPnlForThisSale, userId, stockTicker);
+        } else {
+            // Create new PnL entry
+            handle.execute("INSERT INTO pnl (user_id, stock_ticker, realized_pnl) VALUES (?, ?, ?)",
+                    userId, stockTicker, realizedPnlForThisSale);
+        }
+    }
+
+    private Optional<PnL> findPnl(Handle handle, Long userId, String stockTicker) {
+        return handle.createQuery("SELECT * FROM pnl WHERE user_id = ? AND stock_ticker = ?")
+                .bind(0, userId)
+                .bind(1, stockTicker)
+                .map(new PnLMapper())
+                .findFirst();
+    }
+
     private List<Transaction> getBuyTransactionsWithRemainingQuantity(Handle handle, Long userId, String stockTicker) {
-        TransactionMapper transactionMapper = new TransactionMapper();
         return handle.createQuery("SELECT * FROM transactions WHERE user_id = ? AND stock_ticker = ? AND Transaction_type = 'BUY' AND remaining_quantity > 0 ORDER BY Transaction_date ASC")
                 .bind(0, userId)
                 .bind(1, stockTicker)
-                .map(transactionMapper)
+                .map(new TransactionMapper())
                 .list();
     }
+
+
 
     private void updateBuyTransactionRemainingQuantity(Handle handle, Long TransactionId, int remainingQuantity) {
         handle.execute("UPDATE transactions SET remaining_quantity = ? WHERE id = ?", remainingQuantity, TransactionId);
@@ -170,10 +202,9 @@ public class PortfolioRepository {
     }
 
     private List<UserPortfolio> findUserPortfolio(Handle handle, Long userId) {
-        UserPortfolioMapper userPortfolioMapper = new UserPortfolioMapper();
         return handle.createQuery("SELECT * FROM user_portfolios WHERE user_id = ?")
                 .bind(0, userId)
-                .map(userPortfolioMapper)
+                .map(new UserPortfolioMapper())
                 .list();
     }
 
@@ -191,5 +222,33 @@ public class PortfolioRepository {
                 .mapTo(String.class)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public List<UserPortfolio> findUserPortfolio(Long userId) {
+        Jdbi jdbi = Jdbi.create(dataSource);
+        try(Handle handle = jdbi.open()){
+            return handle.createQuery("SELECT * FROM user_portfolios WHERE user_id = ?")
+                    .bind(0, userId)
+                    .map(new UserPortfolioMapper())
+                    .list();
+        }
+        catch (JdbiException e){
+            LOGGER.error("JDBI exception at find user portfolio");
+            throw new RuntimeException("Jdbi exception at find user portfolio");
+        }
+    }
+
+    public List<PnL> findUserPnL(Long userId) {
+        Jdbi jdbi = Jdbi.create(dataSource);
+        try(Handle handle = jdbi.open()){
+            return handle.createQuery("SELECT * FROM pnl WHERE user_id = ?")
+                    .bind(0, userId)
+                    .map(new PnLMapper())
+                    .list();
+        }
+        catch (JdbiException e){
+            LOGGER.error("JDBI exception at find user pnl");
+            throw new RuntimeException("Jdbi exception at find user pnl");
+        }
     }
 }

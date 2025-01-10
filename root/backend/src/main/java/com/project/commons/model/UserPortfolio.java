@@ -1,5 +1,6 @@
 package com.project.commons.model;
 
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.inject.Singleton;
 import lombok.Data;
 
@@ -7,6 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @Singleton
+@Serdeable.Serializable
 public class UserPortfolio {
     private Long id;
     private Long userId;
