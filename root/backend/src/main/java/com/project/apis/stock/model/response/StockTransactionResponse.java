@@ -7,9 +7,8 @@ import lombok.Data;
 @Data
 @Singleton
 @Serdeable.Serializable
-public class AddStockResponse {
+public class StockTransactionResponse {
     private String ticker;
-    private Long quantity;
+    private int quantity;
     private boolean status;
-    private String message;
 }

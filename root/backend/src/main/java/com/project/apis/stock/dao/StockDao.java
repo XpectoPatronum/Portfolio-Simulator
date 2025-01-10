@@ -3,7 +3,7 @@
 //import com.project.commons.model.Stock;
 //
 //public class StockDao {
-//    public Stock addStock(String userId){
+//    public Stock buyStock(String userId){
 //
 //    }
 //}

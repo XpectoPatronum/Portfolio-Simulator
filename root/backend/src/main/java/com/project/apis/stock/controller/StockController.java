@@ -1,6 +1,6 @@
 package com.project.apis.stock.controller;
 
-import com.project.apis.stock.model.request.AddStockRequest;
+import com.project.apis.stock.model.request.StockTransactionRequest;
 import com.project.apis.stock.service.StockService;
 import io.micronaut.data.connection.annotation.Connectable;
 import io.micronaut.http.HttpResponse;
@@ -11,7 +11,6 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 import jakarta.inject.Inject;
-import reactor.core.publisher.Mono;
 
 
 @Controller("app/v1/stock")
@@ -21,10 +20,16 @@ public class StockController {
     @Inject
     StockService stockService;
 
-    @Post("/add")
+    @Post("/buy")
     @Connectable
-    public HttpResponse index(Authentication authentication, @Body AddStockRequest addStockRequest) {
-         return HttpResponse.created(stockService.addStock(authentication.getName(), addStockRequest));
+    public HttpResponse buyStock(Authentication authentication, @Body StockTransactionRequest stockTransactionRequest) {
+         return HttpResponse.created(stockService.buyStock(authentication.getName(), stockTransactionRequest));
+    }
+
+    @Post("/sell")
+    @Connectable
+    public HttpResponse sellStock(Authentication authentication, @Body StockTransactionRequest stockTransactionRequest) {
+        return HttpResponse.created(stockService.sellStock(authentication.getName(), stockTransactionRequest));
     }
 }
 

@@ -12,9 +12,9 @@ import java.time.LocalDate;
 @Data
 @Introspected
 @Serdeable.Deserializable
-public class AddStockRequest {
+public class StockTransactionRequest {
     private String stock_ticker;
-    private long quantity;
-    private BigDecimal priceBought;
+    private int quantity;
+    private BigDecimal price;
     private LocalDate date;
 }

@@ -30,7 +30,7 @@ http:
 
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/PortfolioSimulator
+    url: jdbc:postgresql://localhost:5432/Portfolio_Simulator
     driverClassName: org.postgresql.Driver
     username: ${JDBC_USER:prakhar}
     password: ${JDBC_USER:prakhar}

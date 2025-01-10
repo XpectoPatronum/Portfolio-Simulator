@@ -6,7 +6,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
@@ -18,8 +17,16 @@ public class PortfolioService {
     PortfolioRepository portfolioRepository;
 
     @Connectable
-    public boolean addStockInPortfolio(Long userId, String stockTicker, BigDecimal price, long quantity) {
-        LOGGER.info("Adding stock in portfolio");
-        return portfolioRepository.updatePortfolio(userId, stockTicker, price, quantity);
+    public boolean buyStockToPortfolio(Long userId, String stockTicker, BigDecimal price, int quantity) {
+        LOGGER.info("Buying {} stock", stockTicker);
+        portfolioRepository.addBuyTransaction(userId, stockTicker, quantity, price);
+        return portfolioRepository.processBuyOrder(userId, stockTicker, price, quantity);
+
+    }
+
+    @Connectable
+    public boolean sellStockFromPortfolio(Long userId, String stockTicker, BigDecimal price, int quantity){
+        LOGGER.info("Selling {} stock", stockTicker);
+        return portfolioRepository.processSellOrder(userId,stockTicker,quantity,price);
     }
 }

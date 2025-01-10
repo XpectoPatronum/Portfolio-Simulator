@@ -1,5 +1,7 @@
 package com.project.apis.portfolio.repository;
 
+import com.project.commons.mapper.TransactionMapper;
+import com.project.commons.mapper.UserPortfolioMapper;
 import com.project.commons.model.Transaction;
 import com.project.commons.model.UserPortfolio;
 import io.micronaut.transaction.annotation.Transactional;
@@ -7,6 +9,7 @@ import jakarta.inject.Inject;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.JdbiException;
+import org.jdbi.v3.core.result.ResultBearing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +25,7 @@ public class PortfolioRepository {
     DataSource dataSource;
 
     @Transactional
-    public boolean updatePortfolio(Long userId, String stockTicker, BigDecimal price, long quantity) {
+    public boolean processBuyOrder(Long userId, String stockTicker, BigDecimal price, int quantity) {
         Jdbi jdbi = Jdbi.create(dataSource);
         try (Handle handle = jdbi.open()) {
             List<UserPortfolio> portfolio = findUserPortfolio(handle, userId);
@@ -32,7 +35,7 @@ public class PortfolioRepository {
 
             if (existingStock.isPresent()) {
                 UserPortfolio portfolioEntry = existingStock.get();
-                long newTotalQuantity = portfolioEntry.getTotalQuantity() + quantity;
+                int newTotalQuantity = portfolioEntry.getTotalQuantity() + quantity;
                 BigDecimal currentTotalValue = portfolioEntry.getAveragePriceBought().multiply(BigDecimal.valueOf(portfolioEntry.getTotalQuantity()));
                 BigDecimal newTotalValue = currentTotalValue.add(price.multiply(BigDecimal.valueOf(quantity)));
                 BigDecimal newAvgPrice = newTotalValue.divide(BigDecimal.valueOf(newTotalQuantity), 2, java.math.RoundingMode.HALF_UP);
@@ -58,6 +61,23 @@ public class PortfolioRepository {
         }
     }
 
+    public void addBuyTransaction(Long userId, String stockTicker, int quantity, BigDecimal price) {
+        Jdbi jdbi = Jdbi.create(dataSource);
+        try (Handle handle = jdbi.open()) {
+            String insertSQL = "INSERT INTO transactions (user_id, stock_ticker, transaction_type, quantity, price, remaining_quantity) VALUES (?, ?, ?, ?, ?, ?)";
+            handle.createUpdate(insertSQL)
+                .bind(0, userId)
+                .bind(1, stockTicker)
+                .bind(2, "BUY") // Constant for buy transaction
+                .bind(3, quantity)
+                .bind(4, price)
+                .bind(5, quantity) // Remaining quantity is the same as purchased quantity for buy
+                .execute();
+        } catch (JdbiException e) {
+            LOGGER.error("Error adding buy transaction", e);
+        }
+    }
+
     @Transactional
     public boolean processSellOrder(Long userId, String stockTicker, int quantityToSell, BigDecimal sellPrice) {
         Jdbi jdbi = Jdbi.create(dataSource);
@@ -77,7 +97,7 @@ public class PortfolioRepository {
                 return false;
             }
 
-            UserPortfolio portfolioEntry = portfolioStock.get();
+            UserPortfolio portfolio = portfolioStock.get();
 
             // 2. Process Transactions in FIFO order
             List<Transaction> buyTransactions = getBuyTransactionsWithRemainingQuantity(handle, userId, stockTicker);
@@ -88,7 +108,7 @@ public class PortfolioRepository {
                 int quantityFromThisTransaction = Math.min(remainingQuantityToSell, buyTransaction.getRemainingQuantity());
 
                 // 3. Record the sell Transaction
-                recordSellTransaction(handle, userId, stockTicker, quantityFromThisTransaction, sellPrice);
+
 
                 remainingQuantityToSell -= quantityFromThisTransaction;
 
@@ -98,15 +118,16 @@ public class PortfolioRepository {
 
                 totalCostOfSoldShares = totalCostOfSoldShares.add(buyTransaction.getPrice().multiply(BigDecimal.valueOf(quantityFromThisTransaction)));
             }
+            recordSellTransaction(handle, userId, stockTicker,quantityToSell, sellPrice);
 
             // 5. Update the portfolio
-            int newTotalQuantity = portfolioEntry.getTotalQuantity() - quantityToSell;
+            int newTotalQuantity = portfolio.getTotalQuantity() - quantityToSell;
             if(newTotalQuantity == 0) {
                 removePortfolioEntry(handle, userId, stockTicker);
             } else {
                 BigDecimal newAveragePrice;
                 if (newTotalQuantity > 0) {
-                    BigDecimal remainingTotalValue = portfolioEntry.getAveragePriceBought().multiply(BigDecimal.valueOf(portfolioEntry.getTotalQuantity())).subtract(totalCostOfSoldShares);
+                    BigDecimal remainingTotalValue = portfolio.getAveragePriceBought().multiply(BigDecimal.valueOf(portfolio.getTotalQuantity())).subtract(totalCostOfSoldShares);
                     newAveragePrice = remainingTotalValue.divide(BigDecimal.valueOf(newTotalQuantity), 2, java.math.RoundingMode.HALF_UP);
                 } else {
                     newAveragePrice = BigDecimal.ZERO;
@@ -122,20 +143,21 @@ public class PortfolioRepository {
     }
 
     private List<Transaction> getBuyTransactionsWithRemainingQuantity(Handle handle, Long userId, String stockTicker) {
-        return handle.createQuery("SELECT * FROM Transactions WHERE user_id = ? AND stock_ticker = ? AND Transaction_type = 'BUY' AND remaining_quantity > 0 ORDER BY Transaction_date ASC")
+        TransactionMapper transactionMapper = new TransactionMapper();
+        return handle.createQuery("SELECT * FROM transactions WHERE user_id = ? AND stock_ticker = ? AND Transaction_type = 'BUY' AND remaining_quantity > 0 ORDER BY Transaction_date ASC")
                 .bind(0, userId)
                 .bind(1, stockTicker)
-                .mapToBean(Transaction.class)
+                .map(transactionMapper)
                 .list();
     }
 
     private void updateBuyTransactionRemainingQuantity(Handle handle, Long TransactionId, int remainingQuantity) {
-        handle.execute("UPDATE Transactions SET remaining_quantity = ? WHERE id = ?", remainingQuantity, TransactionId);
+        handle.execute("UPDATE transactions SET remaining_quantity = ? WHERE id = ?", remainingQuantity, TransactionId);
     }
 
-    private void recordSellTransaction(Handle handle, Long userId, String stockTicker, int quantity, BigDecimal price){
-        handle.execute("INSERT INTO Transactions (user_id, stock_ticker, Transaction_type, quantity, price) VALUES (?, ?, 'SELL', ?, ?)",
-                userId, stockTicker, quantity, price);
+    private void recordSellTransaction(Handle handle, Long userId, String stockTicker, int quantity, BigDecimal price) {
+        handle.execute("INSERT INTO transactions (user_id, stock_ticker, transaction_type, quantity, price, remaining_quantity) VALUES (?, ?, ?, ?, ?, ?)",
+                userId, stockTicker, "SELL",quantity, price, 0);
     }
 
 
@@ -148,9 +170,10 @@ public class PortfolioRepository {
     }
 
     private List<UserPortfolio> findUserPortfolio(Handle handle, Long userId) {
+        UserPortfolioMapper userPortfolioMapper = new UserPortfolioMapper();
         return handle.createQuery("SELECT * FROM user_portfolios WHERE user_id = ?")
                 .bind(0, userId)
-                .mapToBean(UserPortfolio.class) // Use mapToBean for simpler mapping
+                .map(userPortfolioMapper)
                 .list();
     }
 
