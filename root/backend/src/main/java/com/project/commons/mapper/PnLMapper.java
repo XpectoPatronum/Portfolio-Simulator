@@ -15,9 +15,9 @@ public class PnLMapper implements RowMapper<PnL> {
         _pnL.setId(rs.getLong(1));
         _pnL.setUserId(rs.getLong(2));
         _pnL.setStockTicker(rs.getString(3));
-        _pnL.setRealizedPnl(rs.getBigDecimal(4));
-        _pnL.setUnrealizedPnl(rs.getBigDecimal(5));
-
+        _pnL.setStockName(rs.getString(4));
+        _pnL.setRealizedPnl(rs.getBigDecimal(5));
+        _pnL.setUnrealizedPnl(rs.getBigDecimal(6));
         return _pnL;
     }
 

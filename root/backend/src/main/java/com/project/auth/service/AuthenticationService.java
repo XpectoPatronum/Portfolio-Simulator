@@ -7,11 +7,14 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.security.token.jwt.generator.JwtTokenGenerator;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 @Singleton
 public class AuthenticationService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
     @Inject
     private PasswordEncoderService passwordEncoder;
 
@@ -22,6 +25,7 @@ public class AuthenticationService {
     private JwtTokenGenerator jwtTokenGenerator;
 
     public HttpResponse<?> register(RegisterRequest request) {
+        LOGGER.info("User Registration request received");
         try {
             // Validate request
             if (request.getUsername() == null || request.getUsername().trim().isEmpty()) {
@@ -39,7 +43,7 @@ public class AuthenticationService {
             // Create new user
             String encodedPassword = passwordEncoder.encode(request.getPassword());
             System.out.println(encodedPassword);
-            User user = new User(request.getUsername(), encodedPassword);
+            User user = new User(request.getName(),request.getUsername(),encodedPassword);
             userRepository.save(user);
 
             // Return success response

@@ -1,6 +1,7 @@
 package com.project.apis.portfolio.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.project.apis.pnl.PnLResponse;
+import com.project.apis.portfolio.model.PortfolioResponse;
 import com.project.apis.portfolio.repository.PortfolioRepository;
 import com.project.commons.model.PnL;
 import com.project.commons.model.UserPortfolio;
@@ -12,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Singleton
 public class PortfolioService {
@@ -40,20 +41,38 @@ public class PortfolioService {
     }
 
     @Connectable
-    public List<UserPortfolio> showUserPortfolio(String userName){
+    public PortfolioResponse showUserPortfolio(String userName){
         LOGGER.info("Retrieving User Portfolio");
-        if(userRepository.existsByUsername(userName))
-            return portfolioRepository.findUserPortfolio(userRepository.findByUsername(userName).get().getId());
+        if(userRepository.existsByUsername(userName)){
+            List<UserPortfolio> portfolio = portfolioRepository.findUserPortfolio(userRepository.findByUsername(userName).get().getId());
+            PortfolioResponse res = new PortfolioResponse();
+            res.setPortfolio(portfolio);
+            res.setName(userRepository.findByUsername(userName).get().getName());
+            res.setTotalInvested(portfolio.stream()
+                    .map(pf -> pf.getAveragePriceBought().multiply(BigDecimal.valueOf(pf.getTotalQuantity())))
+                    .filter(Objects::nonNull)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add));
+            return res;
+        }
         else
-            return Collections.emptyList();
+            throw new RuntimeException("No such user");
     }
 
     @Connectable
-    public List<PnL> showUserPnL(String userName){
+    public PnLResponse showUserPnL(String userName){
         LOGGER.info("Retrieving User PnL");
-        if(userRepository.existsByUsername(userName))
-            return portfolioRepository.findUserPnL(userRepository.findByUsername(userName).get().getId());
+        if(userRepository.existsByUsername(userName)) {
+            List<PnL> list = portfolioRepository.findUserPnL(userRepository.findByUsername(userName).get().getId());
+            PnLResponse res = new PnLResponse();
+            res.setPnL(list);
+            res.setName(userRepository.findByUsername(userName).get().getName());
+            res.setRealizedProfit(list.stream()
+                    .map(PnL::getRealizedPnl)
+                    .filter(Objects::nonNull)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add));
+            return res;
+        }
         else
-            return Collections.emptyList();
+            throw new RuntimeException("No such user");
     }
 }

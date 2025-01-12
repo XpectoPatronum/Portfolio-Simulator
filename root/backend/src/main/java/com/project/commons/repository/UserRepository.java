@@ -22,10 +22,11 @@ public class UserRepository{
     public User save(User user){
         Jdbi jdbi = Jdbi.create(dataSource);
         try (Handle handle = jdbi.open()) {
-            String query = "INSERT INTO users (username, password) VALUES (?, ?);";
+            String query = "INSERT INTO users (name, username, password) VALUES (?, ?, ?);";
             handle.createUpdate(query)
-                    .bind(0, user.getUsername())
-                    .bind(1, user.getPassword())
+                    .bind(0,user.getName())
+                    .bind(1, user.getUsername())
+                    .bind(2, user.getPassword())
                     .execute();
             return user;
         }
@@ -49,11 +50,12 @@ public class UserRepository{
     public Optional<User> findByUsername(String username) {
         Jdbi jdbi = Jdbi.create(dataSource);
         try (Handle handle = jdbi.open()) {
-            String query = "SELECT id, username, password FROM users WHERE username = ?";
+            String query = "SELECT id, name, username,password FROM users WHERE username = ?";
             return handle.createQuery(query)
                     .bind(0, username)
                     .map((rs, ctx) -> new User(
                             rs.getLong("id"),
+                            rs.getString("name"),
                             rs.getString("username"),
                             rs.getString("password")
                     ))

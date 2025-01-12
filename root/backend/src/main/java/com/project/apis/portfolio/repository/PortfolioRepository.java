@@ -152,6 +152,7 @@ public class PortfolioRepository {
 
     private void updatePnl(Handle handle, Long userId, String stockTicker, BigDecimal realizedPnlForThisSale) {
         // Check if PnL entry exists
+        String stockName=getStockName(handle,stockTicker);
         Optional<PnL> pnlOptional = findPnl(handle, userId, stockTicker);
 
         if (pnlOptional.isPresent()) {
@@ -160,8 +161,8 @@ public class PortfolioRepository {
                     realizedPnlForThisSale, userId, stockTicker);
         } else {
             // Create new PnL entry
-            handle.execute("INSERT INTO pnl (user_id, stock_ticker, realized_pnl) VALUES (?, ?, ?)",
-                    userId, stockTicker, realizedPnlForThisSale);
+            handle.execute("INSERT INTO pnl (user_id, stock_ticker, stock_name, realized_pnl) VALUES (?, ?, ?, ?)",
+                    userId, stockTicker, stockName, realizedPnlForThisSale);
         }
     }
 

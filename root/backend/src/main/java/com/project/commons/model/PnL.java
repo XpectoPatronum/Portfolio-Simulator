@@ -13,6 +13,7 @@ public class PnL {
     private Long id;
     private Long userId;
     private String stockTicker;
+    private String stockName;
     private BigDecimal realizedPnl;
     private BigDecimal unrealizedPnl;
 }
