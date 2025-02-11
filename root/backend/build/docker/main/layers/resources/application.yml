@@ -1,0 +1,31 @@
+#Sat Jan 04 13:22:00 UTC 2025
+micronaut:
+  security:
+    token:
+      jwt:
+        signatures:
+          secret:
+            secret: "temporary-secret-key"
+    intercept-url-map:
+      - pattern: "/public/**"
+        access:
+          - isAnonymous()
+      - pattern: "/**"  # All other routes require authentication
+        access:
+          - isAuthenticated()
+
+  hibernate:
+    enabled: false
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/Portfolio_Simulator
+    driverClassName: org.postgresql.Driver
+    username: ${JDBC_USER:prakhar}
+    password: ${JDBC_PASSWORD:prakhar}
+
+
+
+logger:
+  levels:
+    io.micronaut.context.env: DEBUG

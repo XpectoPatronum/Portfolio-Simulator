@@ -10,5 +10,5 @@ import lombok.Data;
 public class StockTransactionResponse {
     private String ticker;
     private int quantity;
-    private boolean status;
+    private boolean statusFinal;
 }

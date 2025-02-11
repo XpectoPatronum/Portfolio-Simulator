@@ -26,6 +26,8 @@ public class StockService {
     ValidatorService validatorService;
 
     public StockTransactionResponse buyStock(String userName, StockTransactionRequest request) {
+        LOGGER.info(request.toString());
+        LOGGER.info("Stock buy request {}, by {}",request.getStock_ticker(),userName);
         if(userRepository.findByUsername(userName).isEmpty()){
             LOGGER.error("No such user");
             throw new RuntimeException();
@@ -38,7 +40,7 @@ public class StockService {
         StockTransactionResponse response = new StockTransactionResponse();
         response.setQuantity(request.getQuantity());
         response.setTicker(request.getStock_ticker());
-        response.setStatus(portfolioService.buyStockToPortfolio(
+        response.setStatusFinal(portfolioService.buyStockToPortfolio(
                 user.getId(),
                 request.getStock_ticker(),
                 request.getPrice(),
@@ -48,6 +50,7 @@ public class StockService {
     }
 
     public StockTransactionResponse sellStock(String userName, StockTransactionRequest request){
+        LOGGER.info("Stock sell request {}, by {}",request.getStock_ticker(),userName);
         if(userRepository.findByUsername(userName).isEmpty()){
             throw new RuntimeException();
         }
@@ -59,7 +62,7 @@ public class StockService {
         StockTransactionResponse response = new StockTransactionResponse();
         response.setQuantity(request.getQuantity());
         response.setTicker(request.getStock_ticker());
-        response.setStatus(portfolioService.sellStockFromPortfolio(
+        response.setStatusFinal(portfolioService.sellStockFromPortfolio(
                 user.getId(),
                 request.getStock_ticker(),
                 request.getPrice(),

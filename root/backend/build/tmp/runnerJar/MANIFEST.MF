@@ -1,0 +1,42 @@
+Manifest-Version: 1.0
+Class-Path: resources/ classes/ libs/micronaut-serde-jackson-2.12.0.jar 
+ libs/micronaut-rxjava2-http-client-2.6.0.jar libs/micronaut-rxjava2-2.6
+ .0.jar libs/micronaut-security-jwt-4.11.2.jar libs/micronaut-jdbc-hikar
+ i-6.0.2.jar libs/micronaut-jdbi-6.0.2.jar libs/micronaut-security-4.11.
+ 2.jar libs/micronaut-reactor-3.6.0.jar libs/micronaut-serde-support-2.1
+ 2.0.jar libs/micronaut-serde-api-2.12.0.jar libs/micronaut-jdbc-6.0.2.j
+ ar libs/micronaut-cache-caffeine-5.1.0.jar libs/micronaut-security-anno
+ tations-4.11.2.jar libs/micronaut-cache-core-5.1.0.jar libs/micronaut-j
+ ackson-databind-4.7.10.jar libs/brave-context-slf4j-6.0.3.jar libs/snak
+ eyaml-2.3.jar libs/micronaut-security-jwt-2.0.0.M2.jar libs/jbcrypt-0.4
+ .jar libs/micronaut-security-2.0.0.M2.jar libs/micronaut-validation-2.0
+ .0.M3.jar libs/micronaut-security-annotations-2.0.0.M2.jar libs/microna
+ ut-http-server-netty-4.7.10.jar libs/micronaut-http-server-4.7.10.jar l
+ ibs/micronaut-management-4.7.10.jar libs/micronaut-router-4.7.10.jar li
+ bs/micronaut-http-client-4.7.10.jar libs/micronaut-http-netty-4.7.10.ja
+ r libs/micronaut-jackson-core-4.7.10.jar libs/micronaut-websocket-4.7.1
+ 0.jar libs/micronaut-http-client-core-4.7.10.jar libs/micronaut-json-co
+ re-4.7.10.jar libs/micronaut-http-4.7.10.jar libs/micronaut-context-pro
+ pagation-4.7.10.jar libs/micronaut-discovery-core-4.7.10.jar libs/micro
+ naut-context-4.7.10.jar libs/micronaut-aop-4.7.10.jar libs/micronaut-bu
+ ffer-netty-4.7.10.jar libs/micronaut-inject-4.7.10.jar libs/logback-cla
+ ssic-1.5.15.jar libs/postgresql-42.7.4.jar libs/brave-6.0.3.jar libs/ni
+ mbus-jose-jwt-9.41.2.jar libs/caffeine-3.1.8.jar libs/jackson-datatype-
+ jdk8-2.17.2.jar libs/jackson-datatype-jsr310-2.17.2.jar libs/jackson-da
+ tabind-2.17.2.jar libs/jackson-annotations-2.17.2.jar libs/jackson-core
+ -2.17.2.jar libs/jakarta.annotation-api-2.1.1.jar libs/netty-codec-http
+ 2-4.1.116.Final.jar libs/netty-handler-proxy-4.1.116.Final.jar libs/net
+ ty-codec-http-4.1.116.Final.jar libs/netty-handler-4.1.116.Final.jar li
+ bs/netty-codec-socks-4.1.116.Final.jar libs/netty-codec-4.1.116.Final.j
+ ar libs/netty-transport-native-unix-common-4.1.116.Final.jar libs/netty
+ -transport-4.1.116.Final.jar libs/netty-buffer-4.1.116.Final.jar libs/n
+ etty-resolver-4.1.116.Final.jar libs/netty-common-4.1.116.Final.jar lib
+ s/reactor-core-3.6.10.jar libs/micronaut-core-reactive-4.7.10.jar libs/
+ rxjava-2.2.21.jar libs/reactive-streams-1.0.4.jar libs/micronaut-core-4
+ .7.10.jar libs/logback-core-1.5.15.jar libs/HikariCP-6.0.0.jar libs/jdb
+ i3-core-3.47.0.jar libs/slf4j-api-2.0.16.jar libs/jakarta.validation-ap
+ i-3.1.0.jar libs/jakarta.inject-api-2.0.1.jar libs/checker-qual-3.42.0.
+ jar libs/validation-api-2.0.1.Final.jar libs/geantyref-2.0.0.jar libs/e
+ rror_prone_annotations-2.21.1.jar
+Main-Class: com.project.Application
+
