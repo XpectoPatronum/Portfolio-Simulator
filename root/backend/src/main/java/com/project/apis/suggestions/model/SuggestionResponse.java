@@ -1,4 +1,4 @@
-package com.project.apis.suggestions;
+package com.project.apis.suggestions.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.inject.Singleton;

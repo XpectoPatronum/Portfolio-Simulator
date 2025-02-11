@@ -1,15 +1,11 @@
-package com.project.apis.portfolio;
+package com.project.apis.portfolio.controller;
 
 
 import com.project.apis.portfolio.service.PortfolioService;
-import com.project.apis.stock.model.request.StockTransactionRequest;
-import com.project.apis.stock.service.StockService;
 import io.micronaut.data.connection.annotation.Connectable;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Post;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
