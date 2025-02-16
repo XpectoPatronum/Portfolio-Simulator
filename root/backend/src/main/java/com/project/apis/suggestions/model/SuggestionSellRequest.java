@@ -13,14 +13,24 @@ import java.util.List;
 @Serdeable
 @Introspected
 @Serdeable.Serializable
-@AllArgsConstructor
 @NoArgsConstructor
 public class SuggestionSellRequest {
-    @NonNull
     @JsonProperty("query")
     private String query;
 
-    @NonNull
     @JsonProperty("texts")
     private List<String> texts;
+
+    public SuggestionSellRequest(String query, List<String> texts) {
+        this.query = query;
+        this.texts = texts;
+    }
+
+    @Override
+    public String toString() {
+        return "SuggestionSellRequest{" +
+                "query='" + query + '\'' +
+                ", texts=" + texts +
+                '}';
+    }
 }

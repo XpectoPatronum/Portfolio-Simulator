@@ -24,14 +24,14 @@ public class SuggestionHttpClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(SuggestionHttpClient.class);
 
     @Inject
-    @Client("/")
+    @Client(value = "${apis.suggestions.url}", path = "${apis.suggestions.path}")
     HttpClient httpClient;
 
     public List<String> getBuyList(String query) {
         try {
             SuggestionBuyRequest requestBody = new SuggestionBuyRequest(query);
             HttpRequest<SuggestionBuyRequest> request = HttpRequest.POST(
-                            "https://auto-complete-flrm.onrender.com/autocomplete", requestBody)
+                            "/buy", requestBody)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
 
             HttpResponse<String> response = httpClient.toBlocking().exchange(request, String.class);
@@ -54,7 +54,7 @@ public class SuggestionHttpClient {
         try {
             SuggestionSellRequest requestBody = new SuggestionSellRequest(query,portfolioTickerList);
             HttpRequest<SuggestionSellRequest> request = HttpRequest.POST(
-                            "https://auto-complete-sell.onrender.com/autocomplete", requestBody)
+                            "/sell", requestBody)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
 
             HttpResponse<String> response = httpClient.toBlocking().exchange(request, String.class);

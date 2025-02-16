@@ -63,3 +63,10 @@ datasources:
     username: neondb_owner
     password: npg_9Bg6fVYiJyDz
     dialect: POSTGRES
+
+
+
+apis:
+  suggestions:
+    url: 'https://auto-complete-flrm.onrender.com'
+    path: '/autocomplete'

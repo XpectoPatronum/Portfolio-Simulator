@@ -1,5 +1,6 @@
 package com.project.apis.suggestions.service;
 
+import com.project.apis.portfolio.model.PortfolioResponse;
 import com.project.apis.portfolio.service.PortfolioService;
 import com.project.apis.suggestions.connector.SuggestionHttpClient;
 import com.project.commons.model.UserPortfolio;
@@ -8,6 +9,7 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Singleton
@@ -25,9 +27,13 @@ public class SuggestionService {
     }
 
     public List<String> sellSuggestions(String username, String query){
-        List<String> portfolioStockTickers = portfolioService.showUserPortfolio(username).getPortfolio().stream()
+        PortfolioResponse res = portfolioService.showUserPortfolio(username);
+        if(res.getPortfolio().isEmpty()){
+            List<String> stockSuggestions = Arrays.asList("");
+            return suggestionHttpClient.getSellList(stockSuggestions,query);
+        }
+        List<String> portfolioStockTickers = res.getPortfolio().stream()
                 .map(UserPortfolio::getStockTicker).toList();
         return suggestionHttpClient.getSellList(portfolioStockTickers,query);
     }
-
 }
