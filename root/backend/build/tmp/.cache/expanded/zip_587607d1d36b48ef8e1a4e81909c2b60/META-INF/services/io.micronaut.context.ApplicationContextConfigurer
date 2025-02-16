@@ -1,0 +1,3 @@
+com.project.DeducedEnvironmentConfigurer
+com.project.NettyPropertiesAOTContextConfigurer
+com.project.AOTApplicationContextConfigurer

@@ -30,7 +30,7 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: '"${JWT_SECRET:XpectoPatronum}"'
+              secret: '"${JWT_SECRET:xyz}"'
               jws-algorithm: HS256
 
 
@@ -58,10 +58,10 @@ http:
 
 datasources:
   default:
-    url: ${NEON_DB_URL:`jdbc:postgresql://ep-steep-glitter-a1l6rb26-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require`}
+    url: ${NEON_DB_URL:`xyz`}
     driver-class-name: org.postgresql.Driver
-    username: ${NEON_DB_USER:`neondb_owner`}
-    password: ${NEON_DB_PASSWORD:`npg_9Bg6fVYiJyDz`}
+    username: ${NEON_DB_USER:`xyz`}
+    password: ${NEON_DB_PASSWORD:`xyz`}
     dialect: POSTGRES
 
 
