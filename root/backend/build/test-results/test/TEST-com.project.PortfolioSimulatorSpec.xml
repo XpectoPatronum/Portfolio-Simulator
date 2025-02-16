@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.project.PortfolioSimulatorSpec" tests="1" skipped="0" failures="1" errors="0" timestamp="2025-02-16T17:45:49" hostname="Prakhars-MacBook-Air.local" time="0.001">
+  <properties/>
+  <testcase name="initializationError" classname="com.project.PortfolioSimulatorSpec" time="0.001">
+    <failure message="io.micronaut.context.exceptions.BeanInstantiationException: Bean definition [javax.sql.DataSource] could not be loaded: Error instantiating bean of type  [javax.sql.DataSource]&#10;&#10;Message: Invalid JDBC URL [xyz]. JDBC URLs must start with 'jdbc'.&#10;Path Taken: DatasourceFactory.dataSource(DatasourceConfiguration datasourceConfiguration) --&gt; DatasourceFactory.dataSource([DatasourceConfiguration datasourceConfiguration])" type="io.micronaut.context.exceptions.BeanInstantiationException">io.micronaut.context.exceptions.BeanInstantiationException: Bean definition [javax.sql.DataSource] could not be loaded: Error instantiating bean of type  [javax.sql.DataSource]
+
+Message: Invalid JDBC URL [xyz]. JDBC URLs must start with 'jdbc'.
+Path Taken: DatasourceFactory.dataSource(DatasourceConfiguration datasourceConfiguration) --&gt; DatasourceFactory.dataSource([DatasourceConfiguration datasourceConfiguration])
+	at app//io.micronaut.context.DefaultBeanContext.initializeContext(DefaultBeanContext.java:2000)
+	at app//io.micronaut.context.DefaultApplicationContext.initializeContext(DefaultApplicationContext.java:314)
+	at app//io.micronaut.context.DefaultBeanContext.configureAndStartContext(DefaultBeanContext.java:3318)
+	at app//io.micronaut.context.DefaultBeanContext.start(DefaultBeanContext.java:345)
+	at app//io.micronaut.context.DefaultApplicationContext.start(DefaultApplicationContext.java:216)
+	at app//io.micronaut.test.extensions.AbstractMicronautExtension.startApplicationContext(AbstractMicronautExtension.java:507)
+	at app//io.micronaut.test.extensions.spock.MicronautSpockExtension.startApplicationContext(MicronautSpockExtension.java:299)
+	at app//io.micronaut.test.extensions.AbstractMicronautExtension.beforeClass(AbstractMicronautExtension.java:346)
+	at app//io.micronaut.test.extensions.spock.MicronautSpockExtension.lambda$visitSpecAnnotation$2(MicronautSpockExtension.java:93)
+	at app//org.spockframework.runtime.extension.MethodInvocation.proceed(MethodInvocation.java:101)
+	at app//org.spockframework.runtime.model.MethodInfo.invoke(MethodInfo.java:156)
+	at java.base@22.0.1/java.util.ArrayList.forEach(ArrayList.java:1597)
+Caused by: io.micronaut.context.exceptions.BeanInstantiationException: Error instantiating bean of type  [javax.sql.DataSource]
+
+Message: Invalid JDBC URL [xyz]. JDBC URLs must start with 'jdbc'.
+Path Taken: DatasourceFactory.dataSource(DatasourceConfiguration datasourceConfiguration) --&gt; DatasourceFactory.dataSource([DatasourceConfiguration datasourceConfiguration])
+	at app//io.micronaut.context.DefaultBeanContext.resolveByBeanFactory(DefaultBeanContext.java:2349)
+	at app//io.micronaut.context.DefaultBeanContext.doCreateBean(DefaultBeanContext.java:2304)
+	at app//io.micronaut.context.DefaultBeanContext.doCreateBean(DefaultBeanContext.java:2316)
+	at app//io.micronaut.context.DefaultBeanContext.createRegistration(DefaultBeanContext.java:3127)
+	at app//io.micronaut.context.SingletonScope.getOrCreate(SingletonScope.java:80)
+	at app//io.micronaut.context.DefaultBeanContext.findOrCreateSingletonBeanRegistration(DefaultBeanContext.java:3029)
+	at app//io.micronaut.context.DefaultBeanContext.resolveBeanRegistration(DefaultBeanContext.java:2990)
+	at app//io.micronaut.context.DefaultBeanContext.resolveBeanRegistration(DefaultBeanContext.java:2756)
+	at app//io.micronaut.context.DefaultBeanContext.getBean(DefaultBeanContext.java:1745)
+	at app//io.micronaut.context.AbstractBeanResolutionContext.getBean(AbstractBeanResolutionContext.java:89)
+	at app//io.micronaut.context.AbstractInitializableBeanDefinition.resolveBean(AbstractInitializableBeanDefinition.java:2188)
+	at app//io.micronaut.context.AbstractInitializableBeanDefinition.getBeanForConstructorArgument(AbstractInitializableBeanDefinition.java:1350)
+	at app//io.micronaut.context.BeanDefinitionDelegate.instantiate(BeanDefinitionDelegate.java:170)
+	at app//io.micronaut.context.DefaultBeanContext.resolveByBeanFactory(DefaultBeanContext.java:2334)
+	at app//io.micronaut.context.DefaultBeanContext.doCreateBean(DefaultBeanContext.java:2304)
+	at app//io.micronaut.context.DefaultBeanContext.doCreateBean(DefaultBeanContext.java:2316)
+	at app//io.micronaut.context.DefaultBeanContext.createRegistration(DefaultBeanContext.java:3127)
+	at app//io.micronaut.context.SingletonScope.getOrCreate(SingletonScope.java:80)
+	at app//io.micronaut.context.DefaultBeanContext.findOrCreateSingletonBeanRegistration(DefaultBeanContext.java:3029)
+	at app//io.micronaut.context.DefaultBeanContext.initializeEagerBean(DefaultBeanContext.java:2693)
+	at app//io.micronaut.context.DefaultBeanContext.initializeContext(DefaultBeanContext.java:1994)
+	... 11 more
+Caused by: java.lang.IllegalArgumentException: Invalid JDBC URL [xyz]. JDBC URLs must start with 'jdbc'.
+	at io.micronaut.jdbc.JdbcDatabaseManager.findDatabase(JdbcDatabaseManager.java:70)
+	at io.micronaut.jdbc.CalculatedSettings.getValidationQuery(CalculatedSettings.java:167)
+	at io.micronaut.configuration.jdbc.hikari.DatasourceConfiguration.getValidationQuery(DatasourceConfiguration.java:143)
+	at io.micronaut.configuration.jdbc.hikari.DatasourceConfiguration.postConstruct(DatasourceConfiguration.java:78)
+	at io.micronaut.context.AbstractInitializableBeanDefinition.instantiate(AbstractInitializableBeanDefinition.java:770)
+	at io.micronaut.context.BeanDefinitionDelegate.instantiate(BeanDefinitionDelegate.java:167)
+	at io.micronaut.context.DefaultBeanContext.resolveByBeanFactory(DefaultBeanContext.java:2334)
+	... 31 more
+</failure>
+  </testcase>
+  <system-out><![CDATA[?[36m23:15:49.669?[0;39m ?[1;30m[Test worker]?[0;39m ?[34mINFO ?[0;39m ?[35mi.m.c.DefaultApplicationContext$RuntimeConfiguredEnvironment?[0;39m - Established active environments: [test]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

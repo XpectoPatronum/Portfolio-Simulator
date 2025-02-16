@@ -1,0 +1,112 @@
+plugins {
+    id("groovy") 
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.micronaut.application") version "4.4.4"
+    id("io.micronaut.aot") version "4.4.4"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.project.Application' // Replace with your main class
+    }
+}
+
+version = "0.1"
+group = "com.project"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    compileOnly("io.micronaut:micronaut-http-client")
+    compileOnly("org.projectlombok:lombok")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    testImplementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut.reactor:micronaut-reactor-http-client")
+    implementation("io.micronaut.reactor:micronaut-reactor")
+
+    //LOGGER
+    implementation("io.zipkin.brave:brave-context-slf4j:5.13.9")
+
+    // https://mvnrepository.com/artifact/org.yaml/snakeyaml
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '2.3'
+
+
+
+    //rx java
+    implementation("io.micronaut.rxjava2:micronaut-rxjava2")
+    implementation("io.micronaut.rxjava2:micronaut-rxjava2-http-client")
+
+    //postgres jdbc
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    runtimeOnly("org.postgresql:postgresql")
+    implementation("io.micronaut.sql:micronaut-jdbi")
+    implementation("io.micronaut.data:micronaut-data-jdbc")
+
+    //security-jwt
+    // For Gradle
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    compileOnly ("io.micronaut.security:micronaut-security-annotations")
+    implementation ("io.micronaut.security:micronaut-security-jwt")
+
+
+    //For Password Hashing
+    implementation("at.favre.lib:bcrypt:0.10.2")
+
+
+    // Database dependencies
+    implementation("io.micronaut.data:micronaut-data-jdbc")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("org.postgresql:postgresql")
+
+
+}
+
+
+application {
+    mainClass = "com.project.Application"
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("21")
+    targetCompatibility = JavaVersion.toVersion("21")
+}
+
+
+graalvmNative.toolchainDetection = false
+
+micronaut {
+    runtime("netty")
+    testRuntime("spock2")
+    processing {
+        incremental(true)
+        annotations("com.project.*")
+    }
+    aot {
+        // Please review carefully the optimizations enabled below
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+        replaceLogbackXml = true
+    }
+}
+
+
+tasks.named("dockerfileNative") {
+    jdkVersion = "21"
+}
+
+
