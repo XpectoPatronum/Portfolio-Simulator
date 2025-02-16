@@ -30,7 +30,7 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: '"${JWT_SECRET:pleaseChangeThisSecretForANewOne}"'
+              secret: '"${JWT_SECRET:xyz}"'
               jws-algorithm: HS256
 
 
@@ -58,15 +58,15 @@ http:
 
 datasources:
   default:
-    url: jdbc:postgresql://ep-steep-glitter-a1l6rb26-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+    url: ${NEON_DB_URL:`xyz`}
     driver-class-name: org.postgresql.Driver
-    username: neondb_owner
-    password: npg_9Bg6fVYiJyDz
+    username: ${NEON_DB_USER:`xyz`}
+    password: ${NEON_DB_PASSWORD:`xyz`}
     dialect: POSTGRES
 
 
 
 apis:
   suggestions:
-    url: 'https://auto-complete-flrm.onrender.com'
-    path: '/autocomplete'
+    url: ${SUGGESTIONS_API_URL:`xyz`}
+    path: /autocomplete
