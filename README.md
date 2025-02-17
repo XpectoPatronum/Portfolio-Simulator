@@ -9,6 +9,7 @@ Portfolio Simulator is a full-stack application that allows users to manage a si
 ## Features
 - **User Authentication**: Secure registration and login system.
 - **Portfolio Management**: Track and manage simulated investments.
+- **Stock Search Suggestions**: Returns stock auto complete suggestions in buy/sell prompts.
 - **PnL Calculation**: Profit and loss tracking for sold stocks.
 - **Responsive**: Completely responsive frontend.
 - **Full-Stack Architecture**:
@@ -63,4 +64,7 @@ Ensure you have the following installed:
 2. Navigate to the portfolio.
 3. Check PnL to track profit and loss for sold stocks.
 4. Add or Sell Stocks
+
+## Contribution
+Bhavya Savalia -> Made an API for suggesting auto complete in buy and sell stocks using Tries, Levenshtein Distance and N-grams.
 
