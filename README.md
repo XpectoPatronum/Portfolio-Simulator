@@ -66,5 +66,5 @@ Ensure you have the following installed:
 4. Add or Sell Stocks
 
 ## Contribution
-<a href="https://github.com/maverick-1729"> Bhavya Savalia</a> -> Made an API for suggesting auto complete in buy and sell stocks using Tries, Levenshtein Distance and N-grams.
+<a href="https://github.com/maverick-1729"> Bhavya Savalia</a>: Made an API for suggesting auto complete in buy and sell stocks using Tries, Levenshtein Distance and N-grams.
 
