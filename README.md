@@ -32,33 +32,6 @@ Ensure you have the following installed:
 - Java (for Micronaut backend)
 - PostgreSQL
 
-### Steps
-1. **Clone the repository**
-   ```sh
-   git clone https://github.com/yourusername/portfolio-simulator.git
-   cd portfolio-simulator
-   ```
-
-2. **Set up frontend**
-   Serve the HTML, CSS, and JavaScript files using any static file server.
-
-3. **Set up frontend server**
-   ```sh
-   cd frontend-server
-   npm install
-   node server.js
-   ```
-
-4. **Set up backend**
-   ```sh
-   cd backend
-   ./gradlew run
-   ```
-
-5. **Access the application**
-   - Open `http://localhost:3000` to view the frontend.
-   - Ensure backend and frontend servers are running for full functionality.
-
 ## Usage
 1. Register and log in.
 2. Navigate to the portfolio.
